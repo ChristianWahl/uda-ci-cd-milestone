@@ -81,6 +81,7 @@ jobs:
       - run:
           name: Front-end test
           command: |
+            ls -al
             cd frontend/
             npm run test
                 
