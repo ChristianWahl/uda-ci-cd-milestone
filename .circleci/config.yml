@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            ls -al
+            cd frontend/
             npm install
             npm run format
             npm run lint
@@ -63,10 +63,11 @@ jobs:
       - run:
           name: Back-end build
           command: |
-             npm install
-             npm run format
-             npm run lint
-             npm run build
+            cd backend/
+            npm install
+            npm run format
+            npm run lint
+            npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
