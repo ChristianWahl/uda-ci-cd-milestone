@@ -83,6 +83,8 @@ jobs:
           command: |
             ls -al
             cd frontend/
+            ls -al 
+            ls -al node_modules
             npm run test
                 
 #   test-backend:
