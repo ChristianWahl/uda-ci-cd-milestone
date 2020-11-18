@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
+            ls -al
             npm install
             npm run format
             npm run lint
