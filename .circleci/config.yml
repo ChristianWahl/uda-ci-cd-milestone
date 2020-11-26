@@ -120,7 +120,7 @@ jobs:
             cd backends/
             npm audit --audit-level=critical
       - slack/notify:
-          event: fail
+          event: always
           template: basic_fail_1
 
 #   deploy-infrastructure:
