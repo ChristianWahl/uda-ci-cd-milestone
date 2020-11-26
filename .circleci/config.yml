@@ -116,7 +116,7 @@ jobs:
       - run:
           name: Back-end scan
           command: |
-            cd backend/
+            cd backends/
             npm audit --audit-level=critical
 
 #   deploy-infrastructure:
@@ -297,7 +297,7 @@ workflows:
       - scan-backend:
           requires: [build-backend]
       - scan-frontend:
-          requires: [build-frontendss]
+          requires: [build-frontend]
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
