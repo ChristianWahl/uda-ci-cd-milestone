@@ -50,14 +50,6 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - slack/notify:
-          event: fail
-          channel: 'C01F1AAFF1V'
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          channel: 'C01F1AAFF1V'
-          template: success_tagged_deploy_1
 
   build-backend:
     docker:
@@ -75,17 +67,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/notify:
-          event: fail
-          channel: 'C01F1AAFF1V'
-          template: basic_fail_1
-          webhook: https://hooks.slack.com/services/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
-      - slack/notify:
-          event: pass
-          channel: 'C01F1AAFF1V'
-          template: success_tagged_deploy_1
-          webhook: https://hooks.slack.com/services/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
-
+      
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -98,16 +80,6 @@ jobs:
           command: |
             cd frontend/
             npm run test
-      - slack/notify:
-          event: fail
-          channel: 'C01F1AAFF1V'
-          template: basic_fail_1
-          webhook: https://hooks.slack.com/services/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
-      - slack/notify:
-          event: pass
-          channel: 'C01F1AAFF1V'
-          template: success_tagged_deploy_1
-          webhook: https://hooks.slack.com/services/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
                 
   test-backend:
     docker:
@@ -121,16 +93,6 @@ jobs:
           command: |
             cd backend/
             npm run test
-      - slack/notify:
-          event: fail
-          channel: 'C01F1AAFF1V'
-          template: basic_fail_1
-          webhook: https://hooks.slack.com/services/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
-      - slack/notify:
-          event: pass
-          channel: 'C01F1AAFF1V'
-          template: success_tagged_deploy_1
-          webhook: https://hooks.slack.com/services/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
             
   scan-frontend:
     docker:
@@ -144,16 +106,6 @@ jobs:
           command: |
             cd frontend/
             npm audit --audit-level=critical
-      - slack/notify:
-          event: fail
-          channel: 'C01F1AAFF1V'
-          template: basic_fail_1
-          webhook: https://hooks.slack.com/services/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
-      - slack/notify:
-          event: pass
-          channel: 'C01F1AAFF1V'
-          template: success_tagged_deploy_1
-          webhook: https://hooks.slack.com/services/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
 
   scan-backend:
     docker:
@@ -167,16 +119,9 @@ jobs:
           command: |
             cd backends/
             npm audit --audit-level=critical
-      - slack/notify:
-          event: fail
-          channel: 'C01F1AAFF1V'
-          template: basic_fail_1
-          webhook: https://hooks.slack.com/services/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
-      - slack/notify:
-          event: pass
-          channel: 'C01F1AAFF1V'
-          template: success_tagged_deploy_1
-          webhook: https://hooks.slack.com/services/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
+      - slack/status:
+          fail_only: false
+          webhook: https://hooks.slack.com/services/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
 
 #   deploy-infrastructure:
 #     docker:
