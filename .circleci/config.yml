@@ -119,9 +119,23 @@ jobs:
           command: |
             cd backends/
             npm audit --audit-level=critical
-      - slack/status:
-          fail_only: false
-          webhook: https://hooks.slack.com/services/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
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*This is a text notification*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
 
 #   deploy-infrastructure:
 #     docker:
