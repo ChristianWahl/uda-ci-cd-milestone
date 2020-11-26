@@ -79,10 +79,12 @@ jobs:
           event: fail
           channel: 'C01F1AAFF1V'
           template: basic_fail_1
+          webhook: https://hooks.slack.com/services/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
       - slack/notify:
           event: pass
           channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
+          webhook: https://hooks.slack.com/services/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
 
   test-frontend:
     docker:
@@ -100,10 +102,12 @@ jobs:
           event: fail
           channel: 'C01F1AAFF1V'
           template: basic_fail_1
+          webhook: https://hooks.slack.com/services/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
       - slack/notify:
           event: pass
           channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
+          webhook: https://hooks.slack.com/services/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
                 
   test-backend:
     docker:
@@ -121,10 +125,12 @@ jobs:
           event: fail
           channel: 'C01F1AAFF1V'
           template: basic_fail_1
+          webhook: https://hooks.slack.com/services/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
       - slack/notify:
           event: pass
           channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
+          webhook: https://hooks.slack.com/services/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
             
   scan-frontend:
     docker:
@@ -142,10 +148,12 @@ jobs:
           event: fail
           channel: 'C01F1AAFF1V'
           template: basic_fail_1
+          webhook: https://hooks.slack.com/services/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
       - slack/notify:
           event: pass
           channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
+          webhook: https://hooks.slack.com/services/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
 
   scan-backend:
     docker:
@@ -163,10 +171,12 @@ jobs:
           event: fail
           channel: 'C01F1AAFF1V'
           template: basic_fail_1
+          webhook: https://hooks.slack.com/services/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
       - slack/notify:
           event: pass
           channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
+          webhook: https://hooks.slack.com/services/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
 
 #   deploy-infrastructure:
 #     docker:
