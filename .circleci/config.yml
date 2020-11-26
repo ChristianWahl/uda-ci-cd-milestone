@@ -52,10 +52,11 @@ jobs:
           key: frontend-build
       - slack/notify:
           event: fail
-          mentions: '@builds'
+          channel: 'C01F1AAFF1V'
           template: basic_fail_1
       - slack/notify:
           event: pass
+          channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
 
   build-backend:
@@ -76,10 +77,11 @@ jobs:
           key: backend-build
       - slack/notify:
           event: fail
-          mentions: '@builds'
+          channel: 'C01F1AAFF1V'
           template: basic_fail_1
       - slack/notify:
           event: pass
+          channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
 
   test-frontend:
@@ -96,10 +98,11 @@ jobs:
             npm run test
       - slack/notify:
           event: fail
-          mentions: '@builds'
+          channel: 'C01F1AAFF1V'
           template: basic_fail_1
       - slack/notify:
           event: pass
+          channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
                 
   test-backend:
@@ -116,10 +119,11 @@ jobs:
             npm run test
       - slack/notify:
           event: fail
-          mentions: '@builds'
+          channel: 'C01F1AAFF1V'
           template: basic_fail_1
       - slack/notify:
           event: pass
+          channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
             
   scan-frontend:
@@ -136,10 +140,11 @@ jobs:
             npm audit --audit-level=critical
       - slack/notify:
           event: fail
-          mentions: '@builds'
+          channel: 'C01F1AAFF1V'
           template: basic_fail_1
       - slack/notify:
           event: pass
+          channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
 
   scan-backend:
@@ -156,10 +161,11 @@ jobs:
             npm audit --audit-level=critical
       - slack/notify:
           event: fail
-          mentions: '@builds'
+          channel: 'C01F1AAFF1V'
           template: basic_fail_1
       - slack/notify:
           event: pass
+          channel: 'C01F1AAFF1V'
           template: success_tagged_deploy_1
 
 #   deploy-infrastructure:
