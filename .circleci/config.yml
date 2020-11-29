@@ -186,23 +186,23 @@ jobs:
             - .circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
 
-  configure-infrastructure:
-    docker:
-      - image: cytopia/ansible:latest-aws
-    steps:
-      checkout
-      # Add ssh keys with fingerprint
-      # attach workspace
-      - run:
-          name: Install dependencies
-          command: |
-            # Your code here
-            exit 1
-      - run:
-          name: Configure server
-          command: |
-            # Your code here
-            exit 1
+  # configure-infrastructure:
+  #   docker:
+  #     - image: cytopia/ansible:latest-aws
+  #   steps:
+  #     checkout
+  #     # Add ssh keys with fingerprint
+  #     # attach workspace
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           # Your code here
+  #           exit 1
+  #     - run:
+  #         name: Configure server
+  #         command: |
+  #           # Your code here
+  #           exit 1
       # Here's where you will add some code to rollback on failure      
 
 #   run-migrations:
