@@ -23,10 +23,10 @@
       apt:
         autoremove: yes
 
-    - name: "install python"
+    - name: "install python3"
       become: yes
       npm:
-        name: python
+        name: python3
         global: yes
         production: yes
         state: present
