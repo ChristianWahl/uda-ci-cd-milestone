@@ -94,7 +94,8 @@ jobs:
             cd backend/
             npm run test
       - slack/notify:
-          event: fail
+          when: on_fail
+          event: always
           template: basic_fail_1
             
   scan-frontend:
