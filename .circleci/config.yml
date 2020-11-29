@@ -117,7 +117,7 @@ jobs:
       - run:
           name: Back-end scan
           command: |
-            cd backends/
+            cd backend/
             npm audit --audit-level=critical
       - slack/notify:
           event: always
