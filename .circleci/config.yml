@@ -164,6 +164,7 @@ jobs:
       - run:
           name: Send backend ip to MemStash
           command: |
+          echo $BACKEND_IP
             curl -H "Content-Type: text/plain" -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
             --request PUT --data "${BACKEND_IP}" https://api.memstash.io/values/uda_cwa
       # - run:s
