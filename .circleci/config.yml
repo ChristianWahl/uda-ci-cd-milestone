@@ -164,18 +164,17 @@ jobs:
       - run:
           name: Send backend ip to MemStash
           command: |
-          echo $BACKEND_IP
+            echo $BACKEND_IP
             curl -H "Content-Type: text/plain" -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
             --request PUT --data "${BACKEND_IP}" https://api.memstash.io/values/uda_cwa
-      # - run:s
-      #     name: Ensure front-end infrastructure exist
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/frontend.yml \
-      #         #--tags project=your-tag \
-      #         # --stack-name "your front-end stack name with workflow id" \
-      #         # --parameter-overrides ID="your workflow id"  
-      #         exit 1
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=v \
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
       # - run:
       #     name: Add back-end ip to ansible inventory
       #     command: |
