@@ -183,7 +183,7 @@ jobs:
       - persist_to_workspace:
           root: /root/project
           paths:
-            - circleci/ansible/inventory.txt
+            - .circleci/ansible/inventory.txt
       - destroy-environment_on_fail
 
   # configure-infrastructure:
