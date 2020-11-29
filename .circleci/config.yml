@@ -98,7 +98,6 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-          webhook: $(SLACK_WEBHOOK)
             
   scan-frontend:
     docker:
@@ -125,6 +124,19 @@ jobs:
           command: |
             cd backend/
             npm audit --audit-level=critical
+
+  should-fail:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: Should fail
+          command: |
+            exit 1
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
 
 #   deploy-infrastructure:
 #     docker:
@@ -295,16 +307,17 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
+      - should-fail
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
