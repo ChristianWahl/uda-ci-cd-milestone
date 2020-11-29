@@ -196,6 +196,10 @@ jobs:
       - image: cytopia/ansible:latest-aws
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum -y install curl
       - add_ssh_keys:
           fingerprints: 
             - "85:2e:9b:1e:bb:d9:34:0f:ba:9a:05:a7:d3:21:0f:ce"
