@@ -250,7 +250,6 @@ describe('Employee Controller', () => {
       // Act
       await employeeController.activateEmployee(employee.employeeId, employee.isActive);
 
-      expect(true).toBe(false);
       // Assert
       expect(fakeCommandDispatcher.execute).toBeCalledTimes(14);
     });
