@@ -93,6 +93,9 @@ jobs:
           command: |
             cd backend/
             npm run test
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
             
   scan-frontend:
     docker:
@@ -118,10 +121,7 @@ jobs:
           name: Back-end scan
           command: |
             cd backend/
-            npm audit --audit-level=low
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
+            npm audit --audit-level=critical
 
 #   deploy-infrastructure:
 #     docker:
