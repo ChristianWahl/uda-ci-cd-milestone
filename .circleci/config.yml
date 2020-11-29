@@ -199,11 +199,6 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run:
-          name: Install dependencies
-          command: |
-            # Your code here
-            exit 1
-      - run:
           name: Configure server
           command: |
             ansible-playbook -i /tmp/workspace/.circleci/ansible/inventory.txt ansible/configure-server.yml
