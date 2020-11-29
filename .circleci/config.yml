@@ -153,15 +153,24 @@ jobs:
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
-          name: Get backend ip and send it to MemStash
+          name: Get back-end ip and send it to MemStash
           command: |
             BACKEND_IP=(`aws ec2 describe-instances \
-            --region=eu-central-1 \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --output text`)
+              --region=eu-central-1 \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --output text`)
             curl -H "Content-Type: text/plain" -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-            --request PUT --data "${BACKEND_IP}" https://api.memstash.io/values/uda_cwa
+              --request PUT --data "${BACKEND_IP}" https://api.memstash.io/values/uda_cwa
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            yum -y install tar gzip
+            aws ec2 describe-instances \
+              --region=eu-central-1 \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --output text >> .circleci/ansible/inventory.txt
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -170,21 +179,14 @@ jobs:
               --tags project=v \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-      - run:
-          name: Add back-end ip to ansible inventory
-          command: |
-            pwd
-            yum -y install tar gzip
-            aws ec2 describe-instances \
-            --region=eu-central-1 \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: /root/project
           paths:
             - .circleci/ansible/inventory.txt
       - destroy-environment_on_fail
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
   # configure-infrastructure:
   #   docker:
