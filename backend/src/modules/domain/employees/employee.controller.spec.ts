@@ -233,7 +233,7 @@ describe('Employee Controller', () => {
   describe('when a UPDATE request is sent to the controller', () => {
     it('should disptach deactivateEmployee employee command', async () => {
       // Arrange
-      const employee = { employeeId: 10, isActive: false};
+      const employee = { employeeId: 101, isActive: false};
 
       // Act
       await employeeController.deactivateEmployee(employee.employeeId, employee.isActive);
