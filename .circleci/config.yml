@@ -198,7 +198,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache ansible git curl tar gzip
+            apk add --update --no-cache ansible git curl tar gzip jq
             pip3 install --upgrade pip
             pip3 install awscli
       - checkout
@@ -207,8 +207,6 @@ jobs:
             - "85:2e:9b:1e:bb:d9:34:0f:ba:9a:05:a7:d3:21:0f:ce"
       - attach_workspace:
           at: /tmp/workspace
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Compress backend sources
           command: |

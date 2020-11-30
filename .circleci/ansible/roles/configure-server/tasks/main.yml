@@ -46,3 +46,14 @@
         owner: ubuntu
         group: ubuntu
         mode: '0644'
+
+    - name: Extract backend.tar.gz
+      unarchive:
+        src: /tmp/backend.tar.gz
+        dest: /home/ubuntu/backend
+
+    - name:  Install npm deps
+      shell: npm i
+      failed_when: '"ERR!" in npm_finished.stderr'
+      args:
+        chdir: /home/ubuntu/backend
