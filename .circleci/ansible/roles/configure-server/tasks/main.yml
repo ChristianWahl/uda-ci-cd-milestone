@@ -31,3 +31,18 @@
         global: yes
         production: yes
         state: present
+
+    - name: "install nodejs"
+      become: yes
+      apt:
+        name: ["nodejs", "npm"]
+        state: latest
+        update_cache: yes
+
+    - name: "copy backend build to ec2-instance"
+      copy:
+        src: /tmp/backend.tar.gz
+        dest: /tmp/backend.tar.gz
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
