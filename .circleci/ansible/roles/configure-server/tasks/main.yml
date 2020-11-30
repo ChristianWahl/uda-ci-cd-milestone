@@ -47,8 +47,11 @@
         group: ubuntu
         mode: '0644'
 
-    - name: "mkdir"
-      shell: mkdir -p /home/ubuntu/backend
+    - name: Create a directory
+      file:
+        path: /home/ubuntu/backend
+        state: directory
+        mode: '0755'
 
     - name: Extract backend.tar.gz
       unarchive:
@@ -57,6 +60,5 @@
 
     - name:  Install npm deps
       shell: npm i
-      failed_when: '"ERR!" in npm_finished.stderr'
       args:
         chdir: /home/ubuntu/backend
