@@ -13,38 +13,5 @@
     - name: "wait 600 seconds for target connection to become reachable/usable."
       wait_for_connection:
 
-    - name: "upgrade packages"
-      become: yes
-      apt:
-        upgrade: yes
-
-    - name: remove dependencies that are no longer required
-      become: yes
-      apt:
-        autoremove: yes
-
-    - name: "install python3"
-      become: yes
-      npm:
-        name: python3
-        global: yes
-        production: yes
-        state: present
-
-    - name: "install nodejs"
-      become: yes
-      apt:
-        name: ["nodejs", "npm"]
-        state: latest
-        update_cache: yes
-
-    - name: "install pm2"
-      become: yes
-      npm:
-        name: pm2
-        global: yes
-        production: yes
-        state: present
-
   roles:
-    # Your code here
+    - configure-server
