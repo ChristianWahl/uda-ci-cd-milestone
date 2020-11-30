@@ -57,7 +57,12 @@
       unarchive:
         src: /tmp/backend.tar.gz
         dest: /home/ubuntu/
-        
+      
+    - name: Install npm deps
+      shell: rm -f package-lock.json
+      args:
+        chdir: /home/ubuntu/backend
+
     - name: Install npm deps
       shell: npm i
       args:
