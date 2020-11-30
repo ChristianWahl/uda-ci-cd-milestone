@@ -210,14 +210,7 @@ jobs:
       - restore_cache:
           keys: [backend-build]
       - run:
-          name: Back-end build
-          command: |
-            cd backend/
-            npm install
-            npm run build
-            cd ..
-      - run:
-          name: Compress backend
+          name: Compress backend sources
           command: |
             tar cvzf /tmp/backend.tar.gz backend/
       - run:
