@@ -47,6 +47,9 @@
         group: ubuntu
         mode: '0644'
 
+    - name: "mkdir"
+      shell: mkdir -p /home/ubuntu/backend
+
     - name: Extract backend.tar.gz
       unarchive:
         src: /tmp/backend.tar.gz
