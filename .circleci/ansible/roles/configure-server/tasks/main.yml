@@ -9,6 +9,13 @@
       apt:
         autoremove: yes
 
+    - name: "install nodejs"
+      become: yes
+      apt:
+        name: ["nodejs", "npm"]
+        state: latest
+        update_cache: yes
+
     - name: "install python3"
       become: yes
       npm:
@@ -16,13 +23,6 @@
         global: yes
         production: yes
         state: present
-
-    - name: "install nodejs"
-      become: yes
-      apt:
-        name: ["nodejs", "npm"]
-        state: latest
-        update_cache: yes
 
     - name: "install pm2"
       become: yes
