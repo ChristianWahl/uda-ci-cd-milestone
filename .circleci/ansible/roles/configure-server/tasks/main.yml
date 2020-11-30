@@ -65,9 +65,15 @@
 
     - name: ls
       shell: ls -al /home/ubuntu/backend
+      register: lsout
+
+    - debug: msg="{{ lsout.stdout }}"
 
     - name: which
       shell: which npm
+      register: whichout
+
+    - debug: msg="{{ whichout.stdout }}"
 
     - name: Build backend
       shell: cd /home/ubuntu/backend && npm run build
