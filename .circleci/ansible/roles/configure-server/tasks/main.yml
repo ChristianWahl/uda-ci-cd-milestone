@@ -56,23 +56,14 @@
     - name: Extract backend.tar.gz
       unarchive:
         src: /tmp/backend.tar.gz
-        dest: /home/ubuntu/backend
-
-    - name: ls
-      shell: ls -al /home/ubuntu/backend
-      register: lsout
-
-    - debug: msg="{{ lsout.stdout }}"
-
+        dest: /home/ubuntu/
+        
     - name: Install npm deps
       shell: npm i
       args:
         chdir: /home/ubuntu/backend
 
-    - name: which
-      shell: which npm
-
     - name: Build backend
-      shell: cd /home/ubuntu/backend && npm run build
+      shell: npm run build
       args:
         chdir: /home/ubuntu/backend
