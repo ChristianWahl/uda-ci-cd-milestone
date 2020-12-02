@@ -67,3 +67,9 @@
       shell: npm run build
       args:
         chdir: /home/ubuntu/backend
+
+    - name: Start pm2
+      command: pm2 start npm --no-automation --name udapeople_backend --run start
+      args:
+        chdir: /home/ubuntu/backend
+
