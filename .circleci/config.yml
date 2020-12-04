@@ -226,7 +226,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: Set env variables
+      - run: 
+          name: Set env variables
           command: |
             echo "ENVIRONMENT=production" > backend/.env
             echo "NODE_ENV=production" >> backend/.env
