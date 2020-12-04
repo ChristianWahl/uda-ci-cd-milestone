@@ -249,6 +249,10 @@ jobs:
             npm run build
             npm run migrations > /tmp/migrations.log
             cat /tmp/migrations.log
+      - destroy-environment_on_fail
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
       # - run:
       #     name: Send migration results to memstash
       #     command: |
