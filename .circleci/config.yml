@@ -226,6 +226,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - restore_cache:
+          keys: [ backend-build ]
       - run:
           name: Set env variables
           command: |
@@ -244,7 +246,6 @@ jobs:
           name: Run migrations
           command: |
             cd backend/
-            npm install
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
             migrations_done=$(grep "has been executed successfully" /tmp/migrations.log)
@@ -252,30 +253,36 @@ jobs:
               && curl -H "Content-Type: text/plain" \
                  -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
                 --request PUT --data "" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7}
+            exit 0
       - destroy-environment_on_fail
       - slack/notify:
           event: fail
           template: basic_fail_1
-#   deploy-frontend:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#             export API_URL="http://${BACKEND_IP}:3030"
-#             echo "${API_URL}"
-#       - run:
-#           name: Deploy frontend objects
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
+   deploy-frontend:
+     docker:
+       - image: amazon/aws-cli
+     steps:
+       - checkout
+       - restore_cache:
+           keys: [ frontend-build ]
+       - run:
+           name: Install dependencies
+           command: |
+             cd frontend/
+       - run:
+           name: Get backend url
+           command: |
+             BACKEND_IP=$(curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
+               --request GET https://api.memstash.io/values/backend_ip)
+             export API_URL="http://${BACKEND_IP}:3030"
+             echo "${API_URL}"
+             npm run build
+       - run:
+           name: Deploy frontend objects
+           command: |
+             echo "todo"
+             # aws s3 cp ./dist
+       # Here's where you will add some code to rollback on failure
 
 #   deploy-backend:
 #     docker:
