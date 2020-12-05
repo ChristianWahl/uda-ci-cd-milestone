@@ -68,12 +68,6 @@
       args:
         chdir: /home/ubuntu/backend
 
-    - name: Run migrations
-      shell: npm run migrations
-      args:
-        chdir: /home/ubuntu/backend
-
-
 #    - name: Start pm2
 #      command: pm2 start npm --no-automation --name udapeople_backend -- run start
 #      args:

@@ -165,7 +165,7 @@ jobs:
               --filters "Name=tag:project,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text`)
             curl -H "Content-Type: text/plain" -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-              --request PUT --data "${BACKEND_IP}" https://api.memstash.io/values/uda_cwa
+              --request PUT --data "${BACKEND_IP}" https://api.memstash.io/values/backend_ip
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -244,21 +244,19 @@ jobs:
           name: Run migrations
           command: |
             cd backend/
-            cat .env
             npm install
             npm run migrations > /tmp/migrations.log
-            cat /tmp/migrations.log
+            date >> /tmp/migrations.log
+       - run:
+           name: Send migration results to memstash
+           command: |
+             curl -H "Content-Type: text/plain" \
+             -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
+             --request PUT --data "" https://api.memstash.io/values/migration_result
       - destroy-environment_on_fail
       - slack/notify:
           event: fail
           template: basic_fail_1
-      # - run:
-      #     name: Send migration results to memstash
-      #     command: |
-      #       # Your code here
-      #       exit 1
-     # Here's where you will add some code to rollback on failure
-
 #   deploy-frontend:
 #     docker:
 #       # Docker image here that supports AWS CLI
