@@ -225,6 +225,12 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update --no-cache git curl
+            pip3 install --upgrade pip
+            pip3 install awscli
       - checkout
       #      - restore_cache:
       #          keys: [backend-build]
@@ -249,7 +255,10 @@ jobs:
             npm install
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
+            grep "has been executed successfully" /tmp/migrations.log
             migrations_done=(`grep "has been executed successfully" /tmp/migrations.log`)
+            echo $migrations_done
+            exit 0
 #            [ ${#migrations_done} -gt 0 ] \
 #              && curl -H "Content-Type: text/plain" \
 #                 -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
