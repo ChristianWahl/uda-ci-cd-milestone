@@ -249,7 +249,7 @@ jobs:
             npm install
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
-#            migrations_done=$(grep "has been executed successfully" /tmp/migrations.log)
+            migrations_done=(`grep "has been executed successfully" /tmp/migrations.log`)
 #            [ ${#migrations_done} -gt 0 ] \
 #              && curl -H "Content-Type: text/plain" \
 #                 -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
