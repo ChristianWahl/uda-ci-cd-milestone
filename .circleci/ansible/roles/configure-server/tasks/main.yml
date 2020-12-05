@@ -69,9 +69,9 @@
         chdir: /home/ubuntu/backend
 
     - name: Run migrations
-        shell: npm run migrations
-        args:
-          chdir: /home/ubuntu/backend
+      shell: npm run migrations
+      args:
+        chdir: /home/ubuntu/backend
 
 
 #    - name: Start pm2
