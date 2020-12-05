@@ -247,12 +247,12 @@ jobs:
             npm install
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
-       - run:
-           name: Send migration results to memstash
-           command: |
-             curl -H "Content-Type: text/plain" \
-             -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-             --request PUT --data "" https://api.memstash.io/values/migration_result
+      - run:
+          name: Send migration results to memstash
+          command: |
+            curl -H "Content-Type: text/plain" \
+            -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
+            --request PUT --data "" https://api.memstash.io/values/migration_result
       - destroy-environment_on_fail
       - slack/notify:
           event: fail
