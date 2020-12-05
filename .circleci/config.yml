@@ -250,11 +250,11 @@ jobs:
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
             migrations_done=$(grep "has been executed successfully" /tmp/migrations.log)
-            [ ${#migrations_done} -gt 0 ] \
-              && curl -H "Content-Type: text/plain" \
-                 -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-                --request PUT --data "" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7}
-            exit 0
+#            [ ${#migrations_done} -gt 0 ] \
+#              && curl -H "Content-Type: text/plain" \
+#                 -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
+#                --request PUT --data "" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7}
+#            exit 0
       - destroy-environment_on_fail
       - slack/notify:
           event: fail
@@ -282,8 +282,7 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
-            echo "todo"
-            # aws s3 cp ./dist
+            aws s3 cp ./dist/* s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} –recursive”
       - destroy-environment_on_fail
       - slack/notify:
           event: fail
