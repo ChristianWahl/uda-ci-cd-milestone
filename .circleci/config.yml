@@ -247,8 +247,8 @@ jobs:
             npm install
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
-            success=$(grep "COMMIT")
-            if [ ]grep "COMMIT"
+#            success=$(grep "COMMIT")
+#            if [ ]grep "COMMIT"
       - run:
           name: Send migration results to memstash
           command: |
