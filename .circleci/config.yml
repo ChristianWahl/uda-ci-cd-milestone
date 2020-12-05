@@ -226,8 +226,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
+#      - restore_cache:
+#          keys: [backend-build]
       - run:
           name: Set env variables
           command: |
@@ -246,6 +246,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend/
+            npm install
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
             migrations_done=$(grep "has been executed successfully" /tmp/migrations.log)
@@ -263,11 +264,12 @@ jobs:
        - image: amazon/aws-cli
      steps:
        - checkout
-       - restore_cache:
-           keys: [frontend-build]
+#       - restore_cache:
+#           keys: [frontend-build]
        - run:
            name: Install dependencies
            command: |
+             npm install
              cd frontend/
        - run:
            name: Get backend url
