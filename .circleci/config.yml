@@ -251,14 +251,7 @@ jobs:
             [ ${#migrations_done} -gt 0 ] \
               && curl -H "Content-Type: text/plain" \
                  -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-                --request PUT --data "" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7} \
-              || echo "no new migrations"
-      - run:
-          name: Send migration results to memstash
-          command: |
-            curl -H "Content-Type: text/plain" \
-            -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-            --request PUT --data "" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7}
+                --request PUT --data "" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment_on_fail
       - slack/notify:
           event: fail
