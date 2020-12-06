@@ -282,7 +282,8 @@ jobs:
             BACKEND_IP=(`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
               --request GET https://api.memstash.io/values/backend_ip`)
             export API_URL="http://${BACKEND_IP}:3030"
-            cd backend/
+            cd frontend/
+            ls frontend/
             npm install
             npm run build
       - run:
