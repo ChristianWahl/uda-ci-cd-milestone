@@ -279,8 +279,8 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            BACKEND_IP=`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-              --request GET https://api.memstash.io/values/backend_ip)` \
+            BACKEND_IP=(`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
+              --request GET https://api.memstash.io/values/backend_ip`) \
             export API_URL="http://${BACKEND_IP}:3030"
             npm run build
       - run:
