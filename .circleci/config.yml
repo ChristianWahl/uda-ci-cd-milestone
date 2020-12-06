@@ -255,7 +255,7 @@ jobs:
             npm install
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
-            migrations_done=`grep "has been executed successfully" /tmp/migrations.log`
+            grep "has been executed successfully" /tmp/migrations.log
       - destroy-environment_on_fail
       - slack/notify:
           event: fail
