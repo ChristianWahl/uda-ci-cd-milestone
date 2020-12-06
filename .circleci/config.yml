@@ -276,12 +276,18 @@ jobs:
             pip3 install --upgrade pip
             pip3 install awscli
       - checkout
+      - restore_cache:
+          keys: [frontend-build]
       - run:
           name: Get backend url
           command: |
             BACKEND_IP=(`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
               --request GET https://api.memstash.io/values/backend_ip`)
             export API_URL="http://${BACKEND_IP}:3030"
+      - run:
+          name: Build frontend
+          command: |
+            ls
             cd frontend/
             ls frontend/
             npm install
@@ -290,7 +296,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             aws s3 cp ./dist/* s3://udapeople-$CIRCLE_WORKFLOW_ID:0:7”
-      - destroy-environment_on_fail
+#      - destroy-environment_on_fail
       - slack/notify:
           event: fail
           template: basic_fail_1
