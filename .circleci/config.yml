@@ -287,9 +287,8 @@ jobs:
       - run:
           name: Build frontend
           command: |
-            ls
             cd frontend/
-            ls frontend/
+            ls
             npm install
             npm run build
       - run:
