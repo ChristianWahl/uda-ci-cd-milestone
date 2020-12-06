@@ -283,6 +283,7 @@ jobs:
               --request GET https://api.memstash.io/values/backend_ip`)
             export API_URL="http://${BACKEND_IP}:3030"
             cd backend/
+            npm install
             npm run build
       - run:
           name: Deploy frontend objects
