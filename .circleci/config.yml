@@ -49,7 +49,9 @@ jobs:
             npm install
             npm run build:prod
       - save_cache:
-          paths: [frontend/node_modules]
+          paths:
+            - frontend/node_modules
+            - frontend/dist
           key: frontend-build
       - slack/notify:
           event: fail
@@ -69,7 +71,9 @@ jobs:
             npm install
             npm run build
       - save_cache:
-          paths: [backend/node_modules]
+          paths:
+            - backend/node_modules
+            - backend/dist
           key: backend-build
       - slack/notify:
           event: fail
@@ -198,19 +202,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache ansible git curl tar gzip jq
+            apk add --update --no-cache ansible git curl
             pip3 install --upgrade pip
             pip3 install awscli
       - checkout
       - add_ssh_keys:
           fingerprints:
             - "85:2e:9b:1e:bb:d9:34:0f:ba:9a:05:a7:d3:21:0f:ce"
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: Compress backend sources
-          command: |
-            tar cvzf /tmp/backend.tar.gz backend/
       - run:
           name: Configure server
           command: |
@@ -232,8 +230,8 @@ jobs:
             pip3 install --upgrade pip
             pip3 install awscli
       - checkout
-      #      - restore_cache:
-      #          keys: [backend-build]
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Set env variables
           command: |
@@ -252,7 +250,6 @@ jobs:
           name: Run migrations
           command: |
             cd backend/
-            npm install
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
             migrations_done=(`grep "has been executed successfully" /tmp/migrations.log || true`)
@@ -265,6 +262,7 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
+
   deploy-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -284,10 +282,6 @@ jobs:
             BACKEND_IP=(`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
               --request GET https://api.memstash.io/values/backend_ip`)
             export API_URL="http://${BACKEND_IP}:3030"
-            echo $API_URL
-            cd frontend/
-            npm install
-            npm run build
       - run:
           name: Deploy frontend objects
           command: |
@@ -298,23 +292,36 @@ jobs:
           event: fail
           template: basic_fail_1
 
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
-
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update --no-cache ansible git curl tar gzip jq
+            pip3 install --upgrade pip
+            pip3 install awscli
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "85:2e:9b:1e:bb:d9:34:0f:ba:9a:05:a7:d3:21:0f:ce"
+      - restore_cache:
+          keys: [ backend-build ]
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Compress backend sources
+          command: |
+            tar cvzf /tmp/backend.tar.gz backend/dist/
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+      - destroy-environment_on_fail
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 #   smoke-test:
 #     docker:
 #       # Lightweight Docker image
@@ -397,8 +404,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:

@@ -39,34 +39,11 @@
         state: latest
         update_cache: yes
 
-    - name: "copy backend build to ec2-instance"
-      copy:
-        src: /tmp/backend.tar.gz
-        dest: /tmp/backend.tar.gz
-        owner: ubuntu
-        group: ubuntu
-        mode: '0644'
-
     - name: Create backend directory
       file:
         path: /home/ubuntu/backend
         state: directory
         mode: '0755'
-
-    - name: Extract backend.tar.gz
-      unarchive:
-        src: /tmp/backend.tar.gz
-        dest: /home/ubuntu/
-
-    - name: Install npm deps
-      shell: npm i
-      args:
-        chdir: /home/ubuntu/backend
-
-    - name: Build backend
-      shell: npm run build
-      args:
-        chdir: /home/ubuntu/backend
 
     - name: Set dotenv
       shell: |
@@ -81,7 +58,6 @@
         echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> .env
         echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> .env
         echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> .env
-        cat .env
       args:
         chdir: /home/ubuntu/backend
 
