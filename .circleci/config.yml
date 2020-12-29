@@ -303,7 +303,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt install python3-pip ansible
+            sudo apt install python3-pip ansible
             pip3 install --upgrade pip
             pip3 install awscli
       - checkout
