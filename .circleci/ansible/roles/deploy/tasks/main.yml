@@ -1,7 +1,7 @@
 ---
     - name: "copy backend build to ec2-instance"
       copy:
-        src: /tmp/workspace/backend/dist
+        src: /home/circleci/project/backend/dist
         dest: /home/ubuntu
         owner: ubuntu
         group: ubuntu
