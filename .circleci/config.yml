@@ -41,7 +41,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build-2]
+          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Build front-end
           command: |
@@ -52,7 +52,7 @@ jobs:
           paths:
             - frontend/node_modules
             - frontend/dist
-          key: frontend-build-2
+          key: frontend-build-${CIRCLE_WORKFLOW_ID:0:7}
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -63,7 +63,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-7]
+          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Back-end build
           command: |
@@ -76,7 +76,7 @@ jobs:
           paths:
             - backend/node_modules
             - backend/dist
-          key: backend-build-7
+          key: backend-build-${CIRCLE_WORKFLOW_ID:0:7}
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -87,7 +87,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build-2]
+          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Front-end test
           command: |
@@ -103,7 +103,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-2]
+          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Back-end test
           command: |
@@ -119,7 +119,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build-2]
+          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Front-end scan
           command: |
@@ -135,7 +135,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-2]
+          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Back-end scan
           command: |
@@ -235,7 +235,7 @@ jobs:
             pip3 install awscli
       - checkout
       - restore_cache:
-          keys: [backend-build-2]
+          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Set env variables
           command: |
@@ -279,7 +279,7 @@ jobs:
             pip3 install awscli
       - checkout
       - restore_cache:
-          keys: [frontend-build-2]
+          keys: [frontend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - run:
           name: Get backend url
           command: |
@@ -303,7 +303,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apt install python3-pip ansible
+            sudo apt install -y python3-pip ansible
             pip3 install --upgrade pip
             pip3 install awscli
       - checkout
@@ -311,7 +311,7 @@ jobs:
           fingerprints:
             - "85:2e:9b:1e:bb:d9:34:0f:ba:9a:05:a7:d3:21:0f:ce"
       - restore_cache:
-          keys: [backend-build-7]
+          keys: [backend-build-${CIRCLE_WORKFLOW_ID:0:7}]
       - attach_workspace:
           at: /tmp/workspace
       - run:
