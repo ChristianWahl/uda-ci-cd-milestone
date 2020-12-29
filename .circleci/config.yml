@@ -63,19 +63,20 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build-7]
       - run:
           name: Back-end build
           command: |
             cd backend/
             npm install
             npm run build
-            ls
+            ls node_modules/
+            ls dist/
       - save_cache:
           paths:
-            - node_modules
-            - dist
-          key: backend-build-5
+            - backend/node_modules
+            - backend/dist
+          key: backend-build-7
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -310,7 +311,7 @@ jobs:
           fingerprints:
             - "85:2e:9b:1e:bb:d9:34:0f:ba:9a:05:a7:d3:21:0f:ce"
       - restore_cache:
-          keys: [backend-build-5]
+          keys: [backend-build-7]
       - attach_workspace:
           at: /tmp/workspace
       - run:
@@ -318,6 +319,7 @@ jobs:
           command: |
             pwd
             ls
+            ls /home/circleci/project/dist
             ls backend
             cat /tmp/workspace/.circleci/ansible/inventory.txt
             ansible-playbook -i /tmp/workspace/.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
