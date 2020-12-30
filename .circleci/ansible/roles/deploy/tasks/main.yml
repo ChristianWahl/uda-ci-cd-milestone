@@ -15,4 +15,4 @@
     - name: Start pm2
       command: pm2 start npm --no-automation --name udapeople_backend -- run start
       args:
-        chdir: /home/ubuntu/backend/dist
+        chdir: /home/ubuntu/backend/

@@ -315,7 +315,7 @@ jobs:
       - run:
           name: Compress backend
           command: |
-            tar cvzf /tmp/backend.tar.gz backend/dist/
+            tar cvzf /tmp/backend.tar.gz backend/
       - run:
           name: Deploy backend
           command: |
