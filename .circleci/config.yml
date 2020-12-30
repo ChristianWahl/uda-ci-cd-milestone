@@ -5,7 +5,7 @@ orbs:
   slack: circleci/slack@4.1.3
 
 commands:
-  destroy-environment_on_fail:
+  destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     steps:
       - run:
@@ -19,19 +19,20 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
-    # Add parameter here
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            SUCCESS=(`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
+                          --request GET https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7}`)
+            echo $SUCCESS
             if(( $SUCCESS==1 ));
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
+              cd ~/project/backend
+              npm install
+              npm run migrations:revert
               exit 1
             fi
 
@@ -191,7 +192,7 @@ jobs:
               --tags project=v \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-      - destroy-environment_on_fail
+      - destroy-environment
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -217,7 +218,7 @@ jobs:
           command: |
             cat /tmp/workspace/.circleci/ansible/inventory.txt
             ansible-playbook -i /tmp/workspace/.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
-      - destroy-environment_on_fail
+      - destroy-environment
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -259,9 +260,9 @@ jobs:
             [ ${#migrations_done} -gt 0 ] \
               && curl -H "Content-Type: text/plain" \
               -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-              --request PUT --data "yes" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7} \
+              --request PUT --data "1" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7} \
               || true
-      - destroy-environment_on_fail
+      - destroy-environment
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -290,7 +291,8 @@ jobs:
           command: |
             cd frontend/
             aws s3 cp ./dist/ s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      - destroy-environment_on_fail
+      - destroy-environment
+      - revert-migrations
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -321,7 +323,8 @@ jobs:
           name: Deploy backend
           command: |
             ansible-playbook -i /tmp/workspace/.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
-      - destroy-environment_on_fail
+      - destroy-environment
+      - revert-migrations
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -353,13 +356,14 @@ jobs:
           name: Frontend smoke test.
           command: |
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-eu-central-1.amazonaws.com/"
-            if curl -s ${URL} | grep "Should Fail!"
+            if curl -s ${URL} | grep "Let it fail for revert migration test"
             then
               return 0
             else
               return 1
             fi
-      - destroy-environment_on_fail
+      - destroy-environment
+      - revert-migrations
       - slack/notify:
           event: fail
           template: basic_fail_1
