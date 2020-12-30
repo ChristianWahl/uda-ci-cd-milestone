@@ -340,28 +340,28 @@ jobs:
           command: |
             BACKEND_IP=`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
                --request GET https://api.memstash.io/values/backend_ip`
-            echo $BACKEND_IP
             export API_URL="http://${BACKEND_IP}:3030"
       - run:
           name: Backend smoke test.
           command: |
             BACKEND_IP=`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
                            --request GET https://api.memstash.io/values/backend_ip`
-            echo $BACKEND_IP
             export API_URL="http://${BACKEND_IP}:3030"
-            echo $API_URL
             curl "${API_URL}/api/status"
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-eu-central-1.amazonaws.com"
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-eu-central-1.amazonaws.com/#/shouldfail"
             if curl -s ${URL} | grep "Welcome"
             then
               return 1
             else
               return 0
             fi
-       # Here's where you will add some code to rollback on failure
+      - destroy-environment_on_fail
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
 #   cloudfront-update:
 #     docker:
