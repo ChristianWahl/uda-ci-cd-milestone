@@ -324,37 +324,37 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-   smoke-test:
-     docker:
-       - image: python:3.7-alpine3.11
-     steps:
-       - checkout
-       - run:
-           name: Install dependencies
-           command: |
-             apk add --update --no-cache ansible git curl jq
-             pip3 install --upgrade pip
-             pip3 install awscli
-       - run:
-           name: Get backend url
-           command: |
-             BACKEND_IP=(`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
+  smoke-test:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update --no-cache ansible git curl jq
+            pip3 install --upgrade pip
+            pip3 install awscli
+      - run:
+          name: Get backend url
+          command: |
+            BACKEND_IP=(`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
                --request GET https://api.memstash.io/values/backend_ip`)
-             export API_URL="http://${BACKEND_IP}:3030"
-       - run:
-           name: Backend smoke test.
-           command: |
-             curl ${API_URL}/api/status
-       - run:
-           name: Frontend smoke test.
-           command: |
-             URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-eu-central-1.amazonaws.com"
-             if curl -s ${URL} | grep "Welcome"
-             then
+            export API_URL="http://${BACKEND_IP}:3030"
+      - run:
+          name: Backend smoke test.
+          command: |
+            curl ${API_URL}/api/status
+      - run:
+          name: Frontend smoke test.
+          command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-eu-central-1.amazonaws.com"
+            if curl -s ${URL} | grep "Welcome"
+            then
               return 1
-             else
+            else
               return 0
-             fi
+            fi
        # Here's where you will add some code to rollback on failure
 
 #   cloudfront-update:
