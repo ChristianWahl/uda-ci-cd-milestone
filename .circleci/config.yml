@@ -26,6 +26,7 @@ commands:
           command: |
             SUCCESS=`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
                       --request GET https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7}`
+            echo $SUCCESS
             if [[ "$SUCCESS" == "1" ]];
             then
               cd ~/project/backend
@@ -357,9 +358,9 @@ jobs:
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-eu-central-1.amazonaws.com/"
             if curl -s ${URL} | grep "Let it fail for revert migration test"
             then
-              return 0
+              exit 0
             else
-              return 1
+              exit 1
             fi
       - destroy-environment
       - revert-migrations
