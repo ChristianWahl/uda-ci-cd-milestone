@@ -26,7 +26,7 @@ commands:
           command: |
             SUCCESS=`curl -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
                       --request GET https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7}`
-            if(( $SUCCESS==new_migrations ));
+            if(( $SUCCESS==1 ));
             then
               cd ~/project/backend
               npm install
@@ -255,12 +255,11 @@ jobs:
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
             migrations_done=(`grep "has been executed successfully" /tmp/migrations.log || true`)
-            cat /tmp/migrations.log
-            echo $migrations_done
+            echo ${CIRCLE_WORKFLOW_ID:0:7}
             [ ${#migrations_done} -gt 0 ] \
               && curl -H "Content-Type: text/plain" \
               -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
-              --request PUT --data "new_migrations" https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7} \
+              --request PUT --data 1 https://api.memstash.io/values/migration_result_${CIRCLE_WORKFLOW_ID:0:7} \
               || true
       - destroy-environment
       - slack/notify:
