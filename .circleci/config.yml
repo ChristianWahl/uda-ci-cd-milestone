@@ -367,20 +367,23 @@ jobs:
           event: fail
           template: basic_fail_1
 
-#   cloudfront-update:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Update cloudfront distribution
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+              --template-file cloudfront.yml \
+              --stack-name "udapeople-stack" \
+              --parameter-overrides WorkflowID=ctaubomdltbncgasd
+      - destroy-environment
+      - revert-migrations
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
 # cleanup:
 #     docker:
