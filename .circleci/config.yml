@@ -357,6 +357,7 @@ jobs:
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-eu-central-1.amazonaws.com/"
             echo ${CIRCLE_WORKFLOW_ID:0:7}
             http_status=`curl -s -o /dev/null -w "%{http_code}" $URL`
+            echo test
             if [ "$http_status" = "200" ]; then
               echo "Frontend smoke test passed"
             else
