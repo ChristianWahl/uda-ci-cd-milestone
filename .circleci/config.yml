@@ -255,7 +255,6 @@ jobs:
             npm run migrations > /tmp/migrations.log
             date >> /tmp/migrations.log
             migrations_done=(`grep "has been executed successfully" /tmp/migrations.log || true`)
-            echo ${CIRCLE_WORKFLOW_ID:0:7}
             [ ${#migrations_done} -gt 0 ] \
               && curl -H "Content-Type: text/plain" \
               -H "token: 33cdc5e5-44d8-4f57-9a91-c86092465710" \
@@ -355,15 +354,14 @@ jobs:
           name: Frontend smoke test.
           command: |
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.eu-central-1.amazonaws.com/"
-            echo ${CIRCLE_WORKFLOW_ID:0:7}
-            if curl -s ${URL} | grep "Welcome"
+            if curl -s ${URL} | grep "NotWelcome"
             then
               exit 0
             else
               exit 1
             fi
-      #- destroy-environment
-      #- revert-migrations
+      - destroy-environment
+      - revert-migrations
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -379,7 +377,7 @@ jobs:
             aws cloudformation deploy \
               --template-file cloudfront.yml \
               --stack-name "udapeople-stack" \
-              --parameter-overrides WorkflowID=ctaubomdltbncgasd
+              --parameter-overrides WorkflowID=${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment
       - revert-migrations
       - slack/notify:
