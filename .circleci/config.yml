@@ -356,12 +356,12 @@ jobs:
           command: |
             URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-eu-central-1.amazonaws.com/"
             echo ${CIRCLE_WORKFLOW_ID:0:7}
-            curl -s ${URL}
-            if curl -s ${URL} | grep "Welcome"
-            then
-              echo "alles gut"
+            http_status=`curl -s -o /dev/null -w "%{http_code}" $URL`
+            if [ "$http_status" = "200" ]; then
+              echo "Frontend smoke test passed"
             else
-              echo "nichts gut"
+              echo "Frontend smoke test failed"
+              exit 1
             fi
       #- destroy-environment
       #- revert-migrations
