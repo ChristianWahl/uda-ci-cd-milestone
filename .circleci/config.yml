@@ -390,7 +390,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Remove old stacks and files
+          name: Remove old stacks and files.
           command: |
             OldWorkflowID=$(aws cloudformation \
               list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
