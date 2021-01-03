@@ -144,6 +144,9 @@ jobs:
           template: basic_fail_1
 
   deploy-infrastructure:
+    branches:
+      only:
+        - master
     docker:
       - image: amazon/aws-cli
     steps:
@@ -196,6 +199,9 @@ jobs:
           template: basic_fail_1
 
   configure-infrastructure:
+    branches:
+      only:
+        - master
     docker:
       - image: python:3.7-alpine3.11
     steps:
@@ -222,6 +228,9 @@ jobs:
           template: basic_fail_1
 
   run-migrations:
+    branches:
+      only:
+        - master
     docker:
       - image: circleci/node:13.8.0
     steps:
@@ -266,6 +275,9 @@ jobs:
           template: basic_fail_1
 
   deploy-frontend:
+    branches:
+      only:
+        - master
     docker:
       - image: circleci/node:13.8.0
     steps:
@@ -296,6 +308,9 @@ jobs:
           template: basic_fail_1
 
   deploy-backend:
+    branches:
+      only:
+        - master
     docker:
       - image: circleci/node:13.8.0
     steps:
@@ -327,6 +342,9 @@ jobs:
           event: fail
           template: basic_fail_1
   smoke-test:
+    branches:
+      only:
+        - master
     docker:
       - image: circleci/node:13.8.0
     steps:
@@ -367,6 +385,9 @@ jobs:
           template: basic_fail_1
 
   cloudfront-update:
+    branches:
+      only:
+        - master
     docker:
       - image: amazon/aws-cli
     steps:
